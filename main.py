@@ -3,14 +3,13 @@ import numpy as np
 import random
 import sys
 
-
 CELL = 30
 COLS, ROWS = 10, 20
 WIDTH, HEIGHT = CELL * COLS, CELL * ROWS
 FPS = 60
 
 colors = [
-    (30, 30, 30),  # фон
+    (30, 30, 30),
     (0, 255, 255),  # I
     (0, 0, 255),  # J
     (255, 165, 0),  # L
@@ -89,9 +88,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-'''TODO
-Рух фігур реалізувати
-
-'''
