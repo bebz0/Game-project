@@ -115,7 +115,7 @@ def main():
             fall_timer += dt
             time_elapsed = (pygame.time.get_ticks() - start_ticks) // 1000
             fall_delay = max(100, 600 - time_elapsed * 10)
-            
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
