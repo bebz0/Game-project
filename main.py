@@ -7,6 +7,8 @@ import traceback
 CELL = 30
 COLS, ROWS = 10, 20
 WIDTH, HEIGHT = CELL * COLS, CELL * ROWS
+PREVIEW_WIDTH = 150
+TOTAL_WIDTH = WIDTH + PREVIEW_WIDTH
 FPS = 60
 
 colors = [
@@ -84,6 +86,21 @@ def draw_ghost(screen, grid, shape, pos, color):
                 screen.blit(s, rect.topleft)
 
 
+def draw_next_piece(screen):
+    # Поки що базова версія - просто відображаємо заголовок NEXT
+    preview_x = WIDTH + 20
+    preview_y = 100
+
+    font = pygame.font.SysFont('consolas', 20)
+    text = font.render('NEXT:', True, (255, 255, 255))
+    screen.blit(text, (preview_x, preview_y - 30))
+
+    # Рамка для майбутньої фігури
+    pygame.draw.rect(screen, (40, 40, 40), (preview_x - 5, preview_y - 5, 110, 110))
+    pygame.draw.rect(screen, (100, 100, 100), (preview_x - 5, preview_y - 5, 110, 110), 2)
+
+
+
 def draw(screen, grid, shape, pos, color, score, level):
     screen.fill(colors[0])
     draw_ghost(screen, grid, shape, pos, color)
@@ -97,18 +114,24 @@ def draw(screen, grid, shape, pos, color, score, level):
                 draw_block(screen, colors[grid[y, x]], pygame.Rect(x * CELL, y * CELL, CELL, CELL))
     draw_grid(screen)
     pygame.draw.rect(screen, (200, 200, 200), (0, 0, WIDTH, HEIGHT), 3)
+
+    # Відображення наступної фігури
+    draw_next_piece(screen)
+
+    # Перенесення Score та Level на праву панель
     font = pygame.font.SysFont('consolas', 24)
     score_text = font.render(f'Score: {score}', True, (255, 255, 255))
     level_text = font.render(f'Level: {level}', True, (255, 255, 255))
-    screen.blit(score_text, (10, 10))
-    screen.blit(level_text, (10, 40))
+    screen.blit(score_text, (WIDTH + 20, 20))
+    screen.blit(level_text, (WIDTH + 20, 50))
+
     pygame.display.flip()
 
 
 def main():
     try:
         pygame.init()
-        screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        screen = pygame.display.set_mode((TOTAL_WIDTH, HEIGHT))
         pygame.display.set_caption("Тетріс")
         clock = pygame.time.Clock()
         grid = np.zeros((ROWS, COLS), dtype=int)
@@ -165,6 +188,7 @@ def main():
                     if valid(grid, new_shape, new_pos):
                         pos, current = new_pos, new_shape
 
+
             if fall_timer >= fall_delay:
                 pos[1] += 1
                 if not valid(grid, current, pos):
@@ -184,15 +208,14 @@ def main():
                         pygame.quit()
                         sys.exit()
                 fall_timer = 0
+                draw(screen, grid, current, pos, color, score, level)
 
-            draw(screen, grid, current, pos, color, score, level)
 
     except Exception as e:
         print(e)
         traceback.print_exc()
         pygame.quit()
         sys.exit()
-
 
 if __name__ == "__main__":
     main()
