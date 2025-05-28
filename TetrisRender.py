@@ -23,3 +23,13 @@ class TetrisRenderer:
     def _draw_block(self, surface, color, rect):
         pygame.draw.rect(surface, color, rect, border_radius=6)
         pygame.draw.rect(surface, (255, 255, 255), rect, 2, border_radius=6)
+
+    def _draw_ghost(self, screen, grid, piece):
+        ghost_y = piece.y
+        while grid.is_valid_position(piece, y=ghost_y + 1):
+            ghost_y += 1
+        for bx, by, color in piece.get_blocks(y=ghost_y):
+            rect = pygame.Rect(bx * CELL, by * CELL, CELL, CELL)
+            s = pygame.Surface((CELL, CELL), pygame.SRCALPHA)
+            s.fill((*self.colors[color][:3], 40))
+            screen.blit(s, rect.topleft)
