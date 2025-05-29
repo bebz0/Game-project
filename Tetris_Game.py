@@ -41,6 +41,10 @@ class TetrisGame(GameBase):
         self.game_over = False
         self.game_state = "start"
 
+class TetrisRenderer():
+    def __init__(self):
+
+
 
 
     def handle_input(self, event):
@@ -109,8 +113,28 @@ class TetrisGame(GameBase):
                     self._place_piece()
                 self.fall_timer = 0
 
+    def run(self):
+        try:
+            pygame.init()
+            screen = pygame.display.set_mode((TOTAL_WIDTH, HEIGHT))
+            pygame.display.set_caption("Tetris")
+            clock = pygame.time.Clock()
+            renderer = TetrisRenderer(self.colors)
+            running = True
+
+            while running:
+                dt = clock.tick(FPS)
+                for event in pygame.event.get():
+                    running = self.handle_input(event)
+                self.update(dt)
+                renderer.render(screen, self)
+            pygame.quit()
+
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+            pygame.quit()
+            sys.exit()
 
 
-''' #TODO
-run прописати. 
-'''
+
