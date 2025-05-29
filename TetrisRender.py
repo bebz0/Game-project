@@ -112,3 +112,41 @@ class TetrisRenderer:
         quit_text = font_small.render('or ESC to exit', True, (200, 200, 200))
         quit_rect = quit_text.get_rect(center=(TOTAL_WIDTH // 2, box_y + 210))
         screen.blit(quit_text, quit_rect)
+
+    def render(self, screen, game):
+        screen.fill(self.colors[0])
+        if game.game_state == "start":
+            self._draw_start_screen(screen)
+        elif game.game_state == "playing":
+            if not game.game_over:
+                self._draw_ghost(screen, game.grid, game.current_piece)
+                for bx, by, color in game.current_piece.get_blocks():
+                    self._draw_block(screen, self.colors[color],
+                                     pygame.Rect(bx * CELL, by * CELL, CELL, CELL))
+            for y in range(ROWS):
+                for x in range(COLS):
+                    if game.grid.cells[y, x]:
+                        self._draw_block(screen, self.colors[game.grid.cells[y, x]],
+                                         pygame.Rect(x * CELL, y * CELL, CELL, CELL))
+            self._draw_grid(screen)
+            pygame.draw.rect(screen, (200, 200, 200), (0, 0, WIDTH, HEIGHT), 3)
+            self._draw_next_piece(screen, game.next_piece)
+            font = pygame.font.SysFont('consolas', 24)
+            score_text = font.render(f'Score: {game.score_manager.score}', True, (255, 255, 255))
+            level_text = font.render(f'Level: {game.score_manager.level}', True, (255, 255, 255))
+            screen.blit(score_text, (WIDTH + 20, 20))
+            screen.blit(level_text, (WIDTH + 20, 50))
+            font_small = pygame.font.SysFont('consolas', 16)
+            controls = [
+                "Controls:",
+                "← → Move",
+                "↓ Soft drop",
+                "↑ Rotate",
+                "Space Hard drop"
+            ]
+            for i, line in enumerate(controls):
+                text = font_small.render(line, True, (200, 200, 200))
+                screen.blit(text, (WIDTH + 20, 250 + i * 20))
+            if game.game_over:
+                self._draw_game_over(screen, game.score_manager.score, game.score_manager.level)
+        pygame.display.flip()
