@@ -1,0 +1,84 @@
+┌─────────────────────────────────────────┐
+│                 Piece                   │
+├─────────────────────────────────────────┤
+│ + SHAPES: np.array[]                    │
+│ + shape: np.array                       │
+│ + color: int                            │
+│ + x: int                                │
+│ + y: int                                │
+├─────────────────────────────────────────┤
+│ + __init__(shape_idx=None)              │
+│ + rotate(): np.array                    │
+│ + get_blocks(shape, x, y): list         │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│                 Grid                    │
+├─────────────────────────────────────────┤
+│ + cells: np.array                       │
+├─────────────────────────────────────────┤
+│ + __init__()                            │
+│ + is_valid_position(piece, ...): bool   │
+│ + place_piece(piece): int               │
+│ + clear_lines(): int                    │
+│ + reset()                               │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│             ScoreManager                │
+├─────────────────────────────────────────┤
+│ + score: int                            │
+│ + level: int                            │
+│ + lines_cleared: int                    │
+├─────────────────────────────────────────┤
+│ + __init__()                            │
+│ + add_lines(lines)                      │
+│ + get_fall_delay(): int                 │
+│ + reset()                               │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│            GameBase (ABC)               │
+├─────────────────────────────────────────┤
+│ + colors: list                          │
+├─────────────────────────────────────────┤
+│ + __init__()                            │
+│ + run() [abstract]                      │
+└─────────────────────────────────────────┘
+                    △
+                    │
+                    │ extends
+                    │
+┌─────────────────────────────────────────┐
+│              TetrisGame                 │
+├─────────────────────────────────────────┤
+│ + grid: Grid                            │
+│ + score_manager: ScoreManager           │
+│ + current_piece: Piece                  │
+│ + next_piece: Piece                     │
+│ + fall_timer: int                       │
+│ + game_over: bool                       │
+│ + game_state: str                       │
+├─────────────────────────────────────────┤
+│ + __init__()                            │
+│ + handle_input(event): bool             │
+│ + update(dt)                            │
+│ + _place_piece()                        │
+│ + reset()                               │
+│ + run()                                 │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│            TetrisRenderer               │
+├─────────────────────────────────────────┤
+│ + colors: list                          │
+├─────────────────────────────────────────┤
+│ + __init__(colors)                      │
+│ + _draw_grid(surface)                   │
+│ + _draw_block(surface, color, rect)     │
+│ + _draw_ghost(screen, grid, piece)      │
+│ + _draw_next_piece(screen, piece)       │
+│ + _draw_start_screen(screen)            │
+│ + _draw_game_over(screen, score, level) │
+│ + render(screen, game)                  │
+└─────────────────────────────────────────┘
