@@ -82,3 +82,33 @@ class TetrisRenderer:
         exit_text = font_tiny.render('ESC - Exit', True, (150, 150, 150))
         exit_rect = exit_text.get_rect(center=(TOTAL_WIDTH // 2, HEIGHT - 50))
         screen.blit(exit_text, exit_rect)
+
+    def _draw_game_over(self, screen, score, level):
+        overlay = pygame.Surface((TOTAL_WIDTH, HEIGHT))
+        overlay.set_alpha(180)
+        overlay.fill((0, 0, 0))
+        screen.blit(overlay, (0, 0))
+        box_width = 400
+        box_height = 250
+        box_x = (TOTAL_WIDTH - box_width) // 2
+        box_y = (HEIGHT - box_height) // 2
+        pygame.draw.rect(screen, (40, 40, 40), (box_x, box_y, box_width, box_height), border_radius=15)
+        pygame.draw.rect(screen, (255, 255, 255), (box_x, box_y, box_width, box_height), 3, border_radius=15)
+        font_large = pygame.font.SysFont('consolas', 48, bold=True)
+        font_medium = pygame.font.SysFont('consolas', 32)
+        font_small = pygame.font.SysFont('consolas', 20)
+        game_over_text = font_large.render('GAME OVER', True, (255, 50, 50))
+        game_over_rect = game_over_text.get_rect(center=(TOTAL_WIDTH // 2, box_y + 50))
+        screen.blit(game_over_text, game_over_rect)
+        score_text = font_medium.render(f'Final score: {score}', True, (255, 255, 255))
+        score_rect = score_text.get_rect(center=(TOTAL_WIDTH // 2, box_y + 110))
+        screen.blit(score_text, score_rect)
+        level_text = font_medium.render(f'Level reached: {level}', True, (255, 255, 255))
+        level_rect = level_text.get_rect(center=(TOTAL_WIDTH // 2, box_y + 150))
+        screen.blit(level_text, level_rect)
+        restart_text = font_small.render('Press R to restart', True, (200, 200, 200))
+        restart_rect = restart_text.get_rect(center=(TOTAL_WIDTH // 2, box_y + 190))
+        screen.blit(restart_text, restart_rect)
+        quit_text = font_small.render('or ESC to exit', True, (200, 200, 200))
+        quit_rect = quit_text.get_rect(center=(TOTAL_WIDTH // 2, box_y + 210))
+        screen.blit(quit_text, quit_rect)
