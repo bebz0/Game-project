@@ -99,7 +99,18 @@ class TetrisGame(GameBase):
         self.fall_timer = 0
         self.game_over = False
 
+    def update(self, dt):
+        if self.game_state == "playing" and not self.game_over:
+            self.fall_timer += dt
+            if self.fall_timer >= self.score_manager.get_fall_delay():
+                self.current_piece.y += 1
+                if not self.grid.is_valid_position(self.current_piece):
+                    self.current_piece.y -= 1
+                    self._place_piece()
+                self.fall_timer = 0
+
+
 
 ''' #TODO
-update, run прописати. 
+run прописати. 
 '''
