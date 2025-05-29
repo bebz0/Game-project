@@ -53,3 +53,32 @@ class TetrisRenderer:
                         20, 20
                     )
                     self._draw_block(screen, self.colors[piece.color], small_rect)
+
+    def _draw_start_screen(self, screen):
+        screen.fill((20, 20, 40))
+        font_huge = pygame.font.SysFont('consolas', 72, bold=True)
+        font_medium = pygame.font.SysFont('consolas', 24)
+        font_small = pygame.font.SysFont('consolas', 18)
+        font_tiny = pygame.font.SysFont('consolas', 16)
+        title_text = font_huge.render('TETRIS', True, (0, 255, 255))
+        title_rect = title_text.get_rect(center=(TOTAL_WIDTH // 2, HEIGHT // 4))
+        screen.blit(title_text, title_rect)
+        start_text = font_medium.render('Press ENTER to start', True, (255, 255, 255))
+        start_rect = start_text.get_rect(center=(TOTAL_WIDTH // 2, HEIGHT // 2))
+        screen.blit(start_text, start_rect)
+        controls = [
+            "CONTROLS:",
+            "← → - Move left/right",
+            "↓ - Soft drop",
+            "↑ - Rotate",
+            "SPACE - Hard drop"
+        ]
+        for i, line in enumerate(controls):
+            color = (255, 255, 0) if i == 0 else (200, 200, 200)
+            font = font_small if i == 0 else font_tiny
+            text = font.render(line, True, color)
+            text_rect = text.get_rect(center=(TOTAL_WIDTH // 2, HEIGHT // 2 + 80 + i * 25))
+            screen.blit(text, text_rect)
+        exit_text = font_tiny.render('ESC - Exit', True, (150, 150, 150))
+        exit_rect = exit_text.get_rect(center=(TOTAL_WIDTH // 2, HEIGHT - 50))
+        screen.blit(exit_text, exit_rect)
